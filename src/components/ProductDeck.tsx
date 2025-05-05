@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import ProductCard from "./ProductCard";
 import { Product } from "../types/product";
-import { ThumbsDown, ThumbsUp, ShoppingCart, RefreshCw, Heart, X, Star } from "lucide-react"; // Import icons
+import { RefreshCw, Heart, X, Star } from "lucide-react"; // Import icons
 
 interface ProductDeckProps {
   products: Product[];

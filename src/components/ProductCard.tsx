@@ -8,7 +8,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onSwipe }) => {
   const productImages = product.imageUrls?.length ? product.imageUrls : [product.imageUrl];
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeImageIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartPosition, setDragStartPosition] = useState({ x: 0, y: 0 });
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
@@ -70,14 +70,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onSwipe }) => {
 
   const handleTouchEnd = () => {
     endDrag();
-  };
-
-  const showNextImage = () => {
-    setActiveImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
-  };
-
-  const showPreviousImage = () => {
-    setActiveImageIndex((prevIndex) => (prevIndex - 1 + productImages.length) % productImages.length);
   };
 
   return (
