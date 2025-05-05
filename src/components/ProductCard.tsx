@@ -90,7 +90,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onSwipe }) => {
         right: 0,
         bottom: 0,
       }}
-      className="relative w-full max-w-xs sm:max-w-sm h-[500px] rounded-2xl overflow-hidden shadow-xl font-body select-none cursor-pointer"
+      className="relative w-full max-w-sm sm:max-w-md h-[500px] rounded-2xl overflow-hidden shadow-xl font-body select-none cursor-pointer"
     >
       {/* Product Image */}
       <img
