@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"; // Added Framer Motion
 import ProductCard from "./ProductCard";
 import { Product } from "../types/product";
 import { RefreshCw, Heart, X, Star } from "lucide-react"; // Import icons
+import { useAppContext } from "../context/AppContext"; // Import context
 
 interface ProductDeckProps {
   products: Product[];
@@ -33,21 +34,33 @@ const productDeckReducer = (state: ProductDeckState, action: ProductDeckAction):
 };
 
 const ProductDeck: React.FC<ProductDeckProps> = ({ products }) => {
+  const { dispatch } = useAppContext(); // Access dispatch from context
   const [deckState, dispatchDeckAction] = useReducer(productDeckReducer, initialProductDeckState);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | "up" | null>(null);
 
   const handleProductSwipe = (swipeDirection: "left" | "right" | "up", productId: string) => {
     setSwipeDirection(swipeDirection);
+
+    // Dispatch actions to the global context
+    if (swipeDirection === "right") {
+      dispatch({ type: "LIKE", productId });
+    } else if (swipeDirection === "left") {
+      dispatch({ type: "DISLIKE", productId });
+    } else if (swipeDirection === "up") {
+      dispatch({ type: "ADD_TO_CART", productId });
+    }
+
     dispatchDeckAction({ type: "SWIPE", direction: swipeDirection, productId });
     setTimeout(() => setSwipeDirection(null), 300); // Clear swipe direction after animation
   };
 
   const resetProductDeck = () => {
-    dispatchDeckAction({ type: "RESET" });
+    dispatchDeckAction({ type: "RESET" }); // Reset local state
+    dispatch({ type: "RESET" }); // Reset global context
   };
 
   return (
-    <div className="relative w-full max-w-xs sm:max-w-sm h-[600px] flex flex-col items-center">
+    <div className="relative w-full max-w-sm sm:max-w-md h-full flex flex-col items-center justify-center mx-auto overflow-hidden">
       {/* Swipe Feedback Overlay */}
       <AnimatePresence>
         {swipeDirection && (
