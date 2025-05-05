@@ -8,8 +8,9 @@
 # testing
 /coverage
 
-# production
-/build
+# production (exclude build directory only in production builds)
+/build/
+!build/index.html
 
 # misc
 .DS_Store
