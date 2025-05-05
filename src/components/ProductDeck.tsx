@@ -1,4 +1,5 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"; // Added Framer Motion
 import ProductCard from "./ProductCard";
 import { Product } from "../types/product";
 import { RefreshCw, Heart, X, Star } from "lucide-react"; // Import icons
@@ -33,9 +34,12 @@ const productDeckReducer = (state: ProductDeckState, action: ProductDeckAction):
 
 const ProductDeck: React.FC<ProductDeckProps> = ({ products }) => {
   const [deckState, dispatchDeckAction] = useReducer(productDeckReducer, initialProductDeckState);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | "up" | null>(null);
 
   const handleProductSwipe = (swipeDirection: "left" | "right" | "up", productId: string) => {
+    setSwipeDirection(swipeDirection);
     dispatchDeckAction({ type: "SWIPE", direction: swipeDirection, productId });
+    setTimeout(() => setSwipeDirection(null), 300); // Clear swipe direction after animation
   };
 
   const resetProductDeck = () => {
@@ -44,6 +48,37 @@ const ProductDeck: React.FC<ProductDeckProps> = ({ products }) => {
 
   return (
     <div className="relative w-full max-w-xs sm:max-w-sm h-[600px] flex flex-col items-center">
+      {/* Swipe Feedback Overlay */}
+      <AnimatePresence>
+        {swipeDirection && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute inset-0 flex flex-col items-center justify-center z-50"
+          >
+            {swipeDirection === "right" && (
+              <div className="flex flex-col items-center text-green-500">
+                <Heart size={99} />
+                <span className="text-2xl font-bold mt-2">Liked</span>
+              </div>
+            )}
+            {swipeDirection === "left" && (
+              <div className="flex flex-col items-center text-red-500">
+                <X size={99} />
+                <span className="text-2xl font-bold mt-2">Disliked</span>
+              </div>
+            )}
+            {swipeDirection === "up" && (
+              <div className="flex flex-col items-center text-blue-500">
+                <Star size={99} />
+                <span className="text-2xl font-bold mt-2">Added to Cart</span>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Card Stack */}
       <div className="relative w-full h-[500px]">
         {products
