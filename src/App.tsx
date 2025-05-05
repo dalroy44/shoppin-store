@@ -1,25 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { products } from "./data/mock-data";
+import { registerCapacitorListeners } from "./capacitor/listeners";
+import ProductDeck from "./components/ProductDeck";
+
+registerCapacitorListeners();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="h-dvh bg-surface-base dark:bg-black text-text-dark dark:text-text-light p-4 flex justify-center items-center">
+      <ProductDeck products={products} /> {/* Use ProductDeck */}
+    </main>
   );
 }
 
